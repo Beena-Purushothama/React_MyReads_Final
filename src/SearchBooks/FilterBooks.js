@@ -1,29 +1,34 @@
 import React, {Component} from 'react';
 import * as BooksAPI from '../BooksAPI';
+import BookShelf from '../BookShelf.js';
 
 class FilterBooks extends Component {
   //Props : filterText-String,
 	state = {
       filteredBooks : []
     }
-
+	
+ componentDidMount() { 
+ console.log("FilterBooks:In componentDIDMount");
+ }
     componentDidUpdate(prevProps) {
+       console.log("FilterBooks:In componentDID-UPDATE");
 		(prevProps.filterText !== this.props.filterText ) && 
 		(BooksAPI.search(this.props.filterText)
 				 .then((books) => {
-          console.log("books---"+books[0].id),
                		this.setState(() => ({filteredBooks : books}))
         })
       )
   	}
   
 	render() {
+      const {filteredBooks} = this.state;
     	return(
+          (filteredBooks) && (filteredBooks.length >0) && (
         	<div className="search-books-results">
-              <ol className="books-grid">
-             {this.state.filteredBooks.map((book) =>(<li key={book.id} >{book.title}-{book.subtitle}</li>))}
-             </ol>
+             <BookShelf filteredBooks={filteredBooks}/>
             </div>
+)
         );
     }
 }

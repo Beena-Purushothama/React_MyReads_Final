@@ -8,7 +8,7 @@ class SearchBooks extends Component {
     }
 	
 	onFilterTextChange = (value) => {
-      console.log("in onFilterTextChange");
+      console.log("SearchBooks : in onFilterTextChange");
     	this.setState({filterText : value});
     }
 
