@@ -1,23 +1,42 @@
 import React,  {Component} from 'react';
-import Book from './Book.js';
+import Book from './Book';
+import PropTypes from 'prop-types';
 
 class BookShelf extends Component { 
-  //Props: filteredBooks-array
    render(){
-     console.log("BookShelf: Filter Books len="+ this.props.filteredBooks.length);
+    const {shelf,filteredBooks,bookshelves,moveBook} = this.props;
   	return(
       <div className="bookshelf">
-      {/* <h2 className="bookshelf-title">Currently Reading</h2>*/}
-      <div className="bookshelf-books">
-      <ol className="books-grid">
-      {
-      this.props.filteredBooks.map((book) => (<Book key={book.id} book={book}/>))
-      }
-      </ol>
-      </div>
+       {(shelf) && (shelf.name !== "none") &&(<h2 className="bookshelf-title">{shelf.title}</h2>)}
+        <div className="bookshelf-books">
+          <ol className="books-grid">
+            { 
+              (typeof filteredBooks !== "undefined") && 
+              (filteredBooks.length > 0) &&
+              (filteredBooks.map((book) => {
+              	return <li key={book.id}> 
+                    	<Book 
+                     	key={book.id} 
+					 	book={book} 
+						bookshelves={bookshelves} 
+						moveBook={moveBook}
+					/> 
+				</li>
+              }
+			))
+            }
+          </ol>
+        </div>
       </div>
     );
   }
-
 }
+
+BookShelf.propTypes = {
+    shelf: PropTypes.object.isRequired, //Current shelf for which we have filtered books
+  	filteredBooks: PropTypes.array.isRequired,// filtered books either based on current shelf or user entered search text
+    bookshelves: PropTypes.array.isRequired, // Types of books shelfs, comming from app.js
+	moveBook : PropTypes.func.isRequired // function to move books from one shelf to another, comming from app.js
+}
+
 export default BookShelf;
