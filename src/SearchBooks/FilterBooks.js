@@ -29,6 +29,12 @@ class FilterBooks extends Component {
           }
     };
 
+	resetFilteredBooks = () => {
+		const {searchText} = this.props;
+		const foundSearchTerm = Constants.SEARCH_TERMS.find((term) => (term.toLowerCase() === searchText.toLowerCase()));
+		return ((searchText === '') || (typeof foundSearchTerm === 'undefined'));
+    };
+
 	/**
     * @description fetch new filtered books when the component is re-rendered, 
     * This component is re-rendered when searchText in parent component is changed 
@@ -36,9 +42,9 @@ class FilterBooks extends Component {
     componentDidUpdate(prevProps , prevState) {
 		const {searchText} = this.props;
 		if(prevProps.searchText !== searchText) {
-        	if(searchText === '') { //empty the filtered books when user resets the search text to ''
+        	if(this.resetFilteredBooks()) { //empty the filtered books when user resets the search text to ''
             	(this._isMounted = true) && (this.setState(() => ({filteredBooks : []})))
-            }else{
+            }else{ 
                 BooksAPI.search(searchText)
                 		.then((books) => {
                           if((typeof books !== "undefined") && (books.length >0)) {
@@ -50,8 +56,7 @@ class FilterBooks extends Component {
         } 		
   	}
   
-	render() {
-      
+	render() { 
       const {filteredBooks} = this.state;
       const {moveBook} = this.props;
       return(
