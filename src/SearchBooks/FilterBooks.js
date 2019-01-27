@@ -16,7 +16,10 @@ class FilterBooks extends Component {
 	markBooksAlreadyOnShelf = (books) => {
      	const {booksOnShelf} = this.props;
     	if (typeof booksOnShelf !== "undefined") {
-            return books.map((book) => {
+            return books.filter((book) => 
+                         ((typeof book.imageLinks !== 'undefined') && 
+                          (typeof book.imageLinks.thumbnail !== 'undefined'))
+                         ).map((book) => {
               const foundBookOnShelf = booksOnShelf.find((b)=> (book.id===b.id));
               (typeof foundBookOnShelf !== "undefined") && (book.shelf = foundBookOnShelf.shelf);
               return book;
@@ -30,11 +33,11 @@ class FilterBooks extends Component {
     * @description fetch new filtered books when the component is re-rendered, 
     * This component is re-rendered when searchText in parent component is changed 
     */
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps , prevState) {
 		const {searchText} = this.props;
-		if(prevProps.searchText !== searchText ) {
+		if(prevProps.searchText !== searchText) {
         	if(searchText === '') { //empty the filtered books when user resets the search text to ''
-            	this.setState(() => ({filteredBooks : []}))
+            	(this._isMounted = true) && (this.setState(() => ({filteredBooks : []})))
             }else{
                 BooksAPI.search(searchText)
                 		.then((books) => {
@@ -48,6 +51,7 @@ class FilterBooks extends Component {
   	}
   
 	render() {
+      
       const {filteredBooks} = this.state;
       const {moveBook} = this.props;
       return(

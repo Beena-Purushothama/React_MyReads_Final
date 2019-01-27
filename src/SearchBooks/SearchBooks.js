@@ -10,7 +10,7 @@ class SearchBooks extends Component {
     };
 	
 	onSearchTextChange = (value) => {
-    	this.setState({searchText : value});
+    	(this._isMounted = true) && (this.setState({searchText : value}));
     };
 
 	render(){
