@@ -6,7 +6,7 @@ import {debounce} from 'throttle-debounce';
 class SearchBar extends Component {
     constructor(props) {
         super(props);
-        this.debounceSearchTextChange = debounce(1000, this.props.onSearchTextChange);
+        this.debounceSearchTextChange = debounce(500, this.props.onSearchTextChange);
     }
 
     handleChange = (e) => {
