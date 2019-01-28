@@ -24,8 +24,11 @@ class BooksApp extends React.Component {
      */
 	moveBook = (book, shelf) => {
       	BooksAPI.update(book, shelf).then((shelves) => {
-        	BooksAPI.getAll().then((books) => {
-        	(this._isMounted = true) && (this.setState(() => ({books})));
+        	BooksAPI.get(book.id).then((updatedBook) => {
+        	(this._isMounted = true) && (this.setState((currentState) => {
+              const updatedBooks = currentState.books.filter((b) => (b.id !== updatedBook.id));
+              return {books : [...updatedBooks,updatedBook]};
+            }));
         })
         })
     };
