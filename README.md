@@ -6,7 +6,7 @@ This is a bookshelf app that allows you to select and categorize books you have 
 ![](HomePage.png)
 
 ## Search Page View
-![](wellsfargo.png)
+![](SearchPage.png)
 
 ## TL;DR
 
